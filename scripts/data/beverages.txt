@@ -1,0 +1,137 @@
+# Beverage Menu
+## Vodka Cocktails
+Dawa | 950 | Vodka, sugar, lime wedges, honey | signature
+Cane Tulip | 950 | Vodka, sugarcane juice, lime juice, orange wedge
+C-Red | 950 | Vodka, lime juice, mixed berry juice
+The Screwdriver | 1000 | Vodka, orange juice
+## Gorgeous Gin
+Fluffy Gin | 1100 | Gin, Galliano, lime juice, passion purée
+Hibiscus Gin Fizz | 1000 | Gin, in-house hibiscus cordial, soda water, passion fruit
+Tamarind Rose G & T | 1000 | Gin, pink tonic, pomegranate, elderflower cordial, rosemary stick | signature
+Fresh Basil Smash | 850 | Gin, fresh basil, lime juice, simple syrup
+## Whisky Cocktails
+Tamarind Mango Masala | 1000 | Bourbon, tamarind juice, pineapple juice, fresh spicy mango, lime juice, grenadine
+The Cloudy Apple | 1400 | Singleton 12 yrs, lime juice, apple cardamom cordial
+## Rum Cocktails
+Spiced Mojito | 850 | Spiced rum, lemon juice, simple syrup, mint, sugar, ginger ale, bitters
+T'i Punch | 900 | Dark rum, sugarcane juice, passion fruit, lime juice
+## Sugar Free Cocktails
+Kombucha Highball | 950 | Scotch whisky, kombucha, crushed pomegranate, mint | sugar-free
+## Beer Cocktails
+Tamarind Mule | 950 | Vodka, ginger beer, simple syrup, lime juice
+## Mixed Spirits
+Negroni | 800 | Gin, Campari, sweet vermouth
+Electric Blue | 950 | Vodka, gin, rum, blue curaçao, lime, Sprite
+## Tequila Cocktails
+Margarita | 850 | Tequila, lime juice, simple syrup, orange liqueur
+Freddy Fudpucker | 850 | Tequila, Galliano, orange juice
+Paloma | 850 | Tequila, grapefruit, lime, soda water
+## Wine Based Cocktails
+Aperol Spritz | 1400 | Aperol, prosecco, soda water
+## Gin
+Tanqueray No. 10 | 700 |
+Inverroche Amber | 700 |
+Musgrave Pink | 850 |
+Beefeater Pink | 450 |
+Amari Atlantic | 950 |
+Bombay Sapphire | 500 |
+Hendrick's | 700 |
+Blue Bottle Dry Gin | 800 |
+Tanqueray Sevilla | 500 |
+Amari Indian Ocean | 850 |
+## Single Malt
+Singleton 18 yrs | 1100 |
+Dalwhinnie 15 yrs | 900 |
+Glenfiddich 18 yrs | 2300 |
+Glenlivet 18 yrs | 1700 |
+Glenmorangie 10 yrs | 900 |
+Cragganmore 14 yrs | 1200 |
+Caol Ila | 950 |
+Glenfiddich 12 yrs | 1100 |
+Talisker 10 yrs | 1000 |
+Glenkinchie 12 yrs | 950 |
+Glenfiddich 15 yrs | 1400 |
+Lagavulin | 950 |
+Macallan | 12 yrs=1400; 15 yrs=2300; 18 yrs=4000 |
+## Irish & Bourbon Whiskey
+Jameson | 500 |
+Bulleit Bourbon | 700 |
+Jack Daniel's | 600 |
+Jameson Black Barrel | 750 |
+## Tequila
+Don Julio 1942 | 3400 |
+Don Julio Reposado | 1100 |
+Don Julio Blanco | 1000 |
+Casamigos Reposado | 950 |
+Tequila Rose | 400 |
+## Beers
+Local | 550 |
+International | 700 |
+## Ciders
+Savanna Dry | 650 |
+Tusker Cider | 550 |
+## Cognac & Brandy
+Martell VS | 800 |
+Rémy Martin VSOP | 900 |
+Courvoisier VSOP | 1000 |
+Hennessy VS | 1000 |
+Hennessy VSOP | 1500 |
+Martell XO | 5300 |
+## Rum
+Ron Zacapa | 800 |
+Captain Morgan Spiced | 450 |
+Myers's | 450 |
+Bacardi | 450 |
+## Scotch Whisky
+Johnnie Walker Green Label | 800 |
+Johnnie Walker Double Black | 750 |
+Chivas Regal 18 yrs | 950 |
+Famous Grouse 12 yrs | 500 |
+Johnnie Walker King George V | 6250 |
+## Vodka
+Cîroc | 550 |
+Ketel One | 500 |
+Absolut | 450 |
+Grey Goose | 650 |
+Beluga Noble | 800 |
+## Liqueurs
+Baileys | 450 |
+Amarula | 450 |
+Limoncello | 450 |
+Jägermeister | 500 |
+Amaretto | 450 |
+Grappa Nonino | 450 |
+Cointreau | 600 |
+## Aperitifs & Vermouths
+Campari | 450 |
+Pernod | 450 |
+Martini | 450 |
+Aperol | 600 |
+## Fresh Juices | Available in season
+Mango | Small=500; Large=800 |
+Passion Fruit | Small=500; Large=800 |
+Orange | Small=500; Large=800 |
+Tamarind | Small=500; Large=800 |
+Watermelon | Small=500; Large=800 |
+## Minerals
+Sodas | 350 |
+Red Bull | 600 |
+Still Water | Small=300; Large=500 |
+Sparkling Water | Small=350; Large=550 |
+Fitch & Leeds Tonic | 600 | Indian, pink, blue or sugar free
+## Mocktails
+Framboise Fizz | 500 | Raspberry syrup, lime juice, tonic water
+Hibiscus Fizz | 500 | Home-made hibiscus cordial, soda water, passion fruit
+Sugarcane Sawa | 600 | Sugarcane juice, lime and orange juice, mint, nutmeg
+Honey Pine | 550 | Pineapple juice, lime juice, honey, soda water
+Lemon & Mint | 500 | Lemon, fresh mint, sugar syrup
+Jungle Juice | Small=500; Large=800 | Banana, pineapple juice, orange juice, carrot juice, fresh strawberries
+## Shakes
+Freak Shakes | 900 | Oreo, Strawberry Sensation or Banana Split
+Milkshakes | 800 | A choice of vanilla, strawberry, espresso or dates
+## Healthy Corner
+Green Detox | 600 | Green apples, cucumber, celery, banana, lime juice, fresh mint
+Kombucha | 700 | Fix 8: Sicilian, ginger or strawberry
+## Alcohol-Free Drinks
+Heineken 0.0 | 600 |
+Chamdor | Bottle=2700 |

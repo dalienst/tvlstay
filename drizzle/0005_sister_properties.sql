@@ -1,0 +1,1 @@
+ALTER TABLE "properties" ADD COLUMN "show_in_other_guides" boolean DEFAULT true NOT NULL;
