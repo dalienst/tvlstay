@@ -112,7 +112,7 @@ details, hours and services. When a property's "Guest requests" switch is on (De
 can request a service or report a problem from the guide, with their room filled in from the
 room QR code. Requests land in **Requests** (`/admin/requests`) for super admins and that
 property's admins, who move them through New → In progress → Done; the guest sees the status on
-their phone. Staff can get email alerts (see Email below); guests are never emailed. Each phone can send at most 10 requests an hour.
+their phone. Staff can get email alerts (see Email below); guests are never emailed. Each phone can send at most 10 requests an hour. Only guests who scanned a room or spot QR code can send requests: the public link (`/village`) is browse-only, so a stranger with the link can't send any. Switching a room off, or giving it a new code, stops its old scans working (do this if a room's code is abused). A stay PIN from reception may be added later.
 This is the base for the Phase 4 concierge (room service orders, notifications to staff).
 
 Photos are uploaded straight into Postgres (resized to 2000px WebP, a few hundred KB each), so

@@ -12,7 +12,7 @@ export default async function ResetPage({ searchParams }: { searchParams: Promis
   return (
     <main className="flex min-h-dvh items-center justify-center px-4">
       <div className="panel w-full max-w-sm p-6 shadow-sm">
-        <Image src="/logos/tamgrouplogo.png" alt="The Tamarind Group" width={140} height={91} className="mx-auto mb-4" priority />
+        <Image src="/logos/tvllogo.png" alt="Tamarind Village" width={140} height={108} className="mx-auto mb-4" priority />
         <h1 className="font-serif text-2xl">Choose a new password</h1>
         {found ? (
           <>

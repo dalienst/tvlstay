@@ -3,8 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFacility, getProperty } from "@/lib/compendium";
-import { currentRoom } from "@/lib/room";
-import { currentSpot } from "@/lib/spot";
+import { guestAccess, SCAN_TO_REQUEST } from "@/lib/guest-access";
 import { isExternal, telHref } from "@/lib/format";
 import { money, optionText, shownPrices } from "@/lib/price";
 import { HoursList } from "@/components/HoursList";
@@ -28,7 +27,7 @@ export default async function FacilityPage({ params }: Props) {
   if (!property) notFound();
   const f = await getFacility(property.id, slug);
   if (!f) notFound();
-  const [room, scanned] = await Promise.all([currentRoom(property.id), currentSpot(property.id)]);
+  const { room, spot: scanned, canRequest } = await guestAccess(property.id);
   const atSpot = scanned && scanned.facility.id === f.id ? scanned.spot : null;
   const ext = f.extension ?? property.receptionExt;
 
@@ -169,7 +168,7 @@ export default async function FacilityPage({ params }: Props) {
                           {s.priceNote}
                         </p>
                       )}
-                      {property.requestsEnabled && s.isRequestable && (
+                      {property.requestsEnabled && canRequest && s.isRequestable && (
                         <details className="group mt-3">
                           <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white group-open:hidden">
                             <Icon name="send" className="h-4 w-4" /> Request
@@ -197,6 +196,16 @@ export default async function FacilityPage({ params }: Props) {
               })}
             </ul>
           </section>
+        )}
+
+        {property.requestsEnabled && !canRequest && f.services.some((s) => s.isRequestable) && (
+          <p className="card mt-4 flex gap-2.5 px-4 py-3 text-sm text-stone-700">
+            <Icon name="send" className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+            <span>
+              {SCAN_TO_REQUEST}
+              {ext && <> Or dial <b>{ext}</b> from your room phone.</>}
+            </span>
+          </p>
         )}
 
         {!property.requestsEnabled && f.services.length > 0 && ext && (

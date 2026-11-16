@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProperty } from "@/lib/compendium";
-import { currentRoom } from "@/lib/room";
+import { guestAccess, SCAN_TO_REQUEST } from "@/lib/guest-access";
 import { telHref } from "@/lib/format";
 import { Icon } from "@/components/Icon";
 import { MyRequests } from "@/components/MyRequests";
@@ -12,7 +12,7 @@ export const metadata = { title: "Report a problem" };
 export default async function Report({ params }: { params: Promise<{ property: string }> }) {
   const property = await getProperty((await params).property);
   if (!property) notFound();
-  const room = await currentRoom(property.id);
+  const { room, canRequest } = await guestAccess(property.id);
 
   return (
     <main className="px-4 pt-6">
@@ -25,7 +25,12 @@ export default async function Report({ params }: { params: Promise<{ property: s
         {property.receptionExt && <> For anything urgent, dial reception on {property.receptionExt}.</>}
       </p>
       <div className="card mt-5 px-4 py-4">
-        {property.requestsEnabled ? (
+        {property.requestsEnabled && !canRequest ? (
+          <p className="text-sm text-stone-700">
+            {SCAN_TO_REQUEST}
+            {property.receptionExt && <> For anything urgent, dial reception on {property.receptionExt}.</>}
+          </p>
+        ) : property.requestsEnabled ? (
           <RequestForm property={property.slug} kind="issue" room={room?.label} submitLabel="Send to reception" />
         ) : (
           <p className="text-sm text-stone-700">

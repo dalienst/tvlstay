@@ -27,7 +27,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
       <header className="border-b border-stone-200 bg-white print:hidden">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-1 px-4 py-2.5">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <Image src="/logos/tamgrouplogo.png" alt="" width={48} height={31} />
+            <Image src="/logos/tvllogo.png" alt="" width={42} height={32} />
             <span className="font-serif text-lg">Guest guide admin</span>
           </Link>
           <nav className="order-last -mx-4 flex w-[calc(100%+2rem)] gap-5 overflow-x-auto whitespace-nowrap border-t border-stone-100 px-4 pt-2 text-sm md:order-none md:mx-0 md:w-auto md:border-0 md:p-0">

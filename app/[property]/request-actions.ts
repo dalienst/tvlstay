@@ -12,7 +12,7 @@ import { and, eq, gt, sql } from "drizzle-orm";
 import { getDb } from "@/lib/db/db";
 import { facilities, facilityServices, guestRequests, spots } from "@/lib/db/schema";
 import { getProperty } from "@/lib/compendium";
-import { currentRoom } from "@/lib/room";
+import { guestAccess, SCAN_TO_REQUEST } from "@/lib/guest-access";
 import { MAX_REQUESTS_PER_HOUR, REQUESTS_COOKIE, myRequestIds } from "@/lib/guest-requests";
 import { optionText, shownPrices } from "@/lib/price";
 
@@ -65,7 +65,8 @@ export async function sendRequest(_prev: RequestState, form: FormData): Promise<
     if (!message) return { error: "Tell us briefly what's wrong." };
   }
 
-  const room = await currentRoom(property.id);
+  const { room, canRequest } = await guestAccess(property.id);
+  if (!canRequest) return { error: `${SCAN_TO_REQUEST}${property.receptionExt ? ` Or dial reception on ${property.receptionExt}.` : ""}` };
   const roomLabel = room?.label ?? clip(form.get("room"), 30);
   if (!roomLabel) return { error: "Please add your room or apartment number." };
 

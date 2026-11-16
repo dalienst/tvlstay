@@ -119,6 +119,9 @@ const TASKS: Task[] = [
       <>
         Property → <b>Details</b> → <b>Guest requests</b>. Only switch it on when someone at reception is watching the Requests page. When
         it&apos;s off, guests are told to dial reception instead.
+      {" "}
+        Only guests who scanned their apartment&apos;s QR code, or a spot code like the pool&apos;s, can send requests; anyone with just the
+        link can browse but not ask. If a room&apos;s code is misused, click <b>New code</b> for that room under <b>Rooms &amp; QR codes</b>.
       </>
     ),
   },
