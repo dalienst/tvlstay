@@ -2,6 +2,10 @@ node_modules
 .next
 .env
 .env.local
+.env.example
+.env.development
+.env.production
+.env.test
 *.tsbuildinfo
 next-env.d.ts
 qr
