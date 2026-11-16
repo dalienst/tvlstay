@@ -81,6 +81,11 @@ export default async function Rooms({
                   <form action={saveRooms} className="flex flex-wrap justify-end gap-1">
                     <input type="hidden" name="propertyId" value={property.id} />
                     <input type="hidden" name="id" value={r.id} />
+                    {r.isActive && (
+                      <a href={`/admin/properties/${property.id}/rooms/print?room=${r.id}`} target="_blank" className="btn btn-sm">
+                        QR code
+                      </a>
+                    )}
                     <SubmitButton className="btn btn-sm" name="intent" value="toggle">
                       {r.isActive ? "Switch off" : "Switch on"}
                     </SubmitButton>

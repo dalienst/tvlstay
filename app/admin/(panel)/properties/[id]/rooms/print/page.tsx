@@ -27,14 +27,16 @@ export default async function PrintQr({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { property } = await propertyFor(Number((await params).id));
-  const generalOnly = (await searchParams).general === "1";
+  const sp = await searchParams;
+  const generalOnly = sp.general === "1";
+  const only = Number(sp.room) || null;
   const origin = await publicOrigin();
   const list = generalOnly
     ? []
     : await getDb()
         .select()
         .from(rooms)
-        .where(and(eq(rooms.propertyId, property.id), eq(rooms.isActive, true)))
+        .where(and(eq(rooms.propertyId, property.id), eq(rooms.isActive, true), only ? eq(rooms.id, only) : undefined))
         .orderBy(asc(rooms.label));
   list.sort((a, b) => a.label.localeCompare(b.label, undefined, { numeric: true }));
   const general = await qrSvg(`${origin}/${property.slug}`);
@@ -50,7 +52,7 @@ export default async function PrintQr({
         </p>
       </div>
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 print:grid-cols-3">
-        <Card title={property.name} sub="Scan for our guest guide: dining, menus and more" svg={general} logo={property.logoUrl} />
+        {!only && <Card title={property.name} sub="Scan for our guest guide: dining, menus and more" svg={general} logo={property.logoUrl} />}
         {cards.map(({ r, svg }) => (
           <Card key={r.id} title={`Room ${r.label}`} sub="Scan for your in-room guide" svg={svg} logo={property.logoUrl} />
         ))}

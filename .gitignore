@@ -2,10 +2,10 @@ node_modules
 .next
 .env
 .env.local
-.env.production
-.env.development
-.env.test
-.env.example
 *.tsbuildinfo
 next-env.d.ts
 qr
+
+# Starting content stays on your computer, not on GitHub
+scripts/seed.ts
+scripts/data/

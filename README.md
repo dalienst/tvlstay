@@ -74,13 +74,13 @@ editing the guide.
 * **Room codes:** each room gets an unguessable link, `/r/<code>`. Scanning it remembers the
   room (the header shows "Room 101"), which room service and requests will use later.
 
-```bash
-npm run rooms -- village 101 102 103 A1 A2   # add rooms and write their QR codes
-npm run rooms -- village                     # rewrite the QR codes for existing rooms
-```
+Add rooms in the admin: open the property, **Rooms & QR codes**, type `101, 102` or a range
+like `201-212`, then click **QR code** next to a room (or **Print QR codes** for all of them).
+Set `APP_URL` to the live address before printing, otherwise the codes point at localhost.
+(`npm run rooms` still works from the command line, but you don't need it.)
 
-QR codes are written to `qr/village/` as SVG files, which print crisply at any size. Set
-`APP_URL` to the live address before printing, otherwise the codes point at localhost.
+The starting content (`scripts/seed.ts`, `scripts/data/`) stays on your computer: it's in
+`.gitignore`, and nothing in the deployed app needs it.
 
 * **Spot codes:** places inside a facility where staff bring things (Main pool, Pool bar).
   Add them on the facility's admin page under **Spots and location QR codes**, then click
