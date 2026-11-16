@@ -38,6 +38,10 @@ changes apply themselves on every deploy, after the new version builds and befor
 live. Migrations already applied are skipped, and if one fails the deploy stops and the
 running site stays as it was.
 
+As a safety net, `npm start` also runs the migrations before starting the site, so they
+apply even if Railway skips the pre-deploy step. The second run finds nothing to do. If a
+migration fails there, the site won't start: check the deploy logs for "Migration failed".
+
 In the Railway project, add a Postgres service and set these variables on the app service:
 
 * `DATABASE_URL`: reference the Postgres service, e.g. `${{Postgres.DATABASE_URL}}` (the
