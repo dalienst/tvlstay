@@ -9,7 +9,7 @@ import { audit } from "@/lib/audit";
 import { moveInList, propertyFor } from "@/lib/admin/access";
 import { back, bool, emails, imageUrl, int, isTime, opt, slugify, str } from "@/lib/admin/form";
 
-const RESERVED_SLUGS = new Set(["admin", "media", "r", "api", "_next"]);
+const RESERVED_SLUGS = new Set(["admin", "media", "r", "s", "api", "_next"]);
 
 async function slugTaken(slug: string, exceptId?: number) {
   const where = exceptId ? and(eq(properties.slug, slug), ne(properties.id, exceptId)) : eq(properties.slug, slug);

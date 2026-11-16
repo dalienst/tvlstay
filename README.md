@@ -82,6 +82,12 @@ npm run rooms -- village                     # rewrite the QR codes for existing
 QR codes are written to `qr/village/` as SVG files, which print crisply at any size. Set
 `APP_URL` to the live address before printing, otherwise the codes point at localhost.
 
+* **Spot codes:** places inside a facility where staff bring things (Main pool, Pool bar).
+  Add them on the facility's admin page under **Spots and location QR codes**, then click
+  **QR code** to print. Each points at `/s/<code>`; scanning it opens the facility with that
+  spot chosen under "Where should we bring it?" (remembered for 6 hours). Guests can also pick
+  "My room" or "Somewhere else" (with a note). Requests and staff emails show **Bring to**.
+
 ## Admin panel (/admin)
 
 Staff sign in at `/admin`. Roles:

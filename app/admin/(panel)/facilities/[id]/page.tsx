@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { asc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db/db";
-import { facilityServices, openingHours } from "@/lib/db/schema";
+import { facilityServices, openingHours, spots } from "@/lib/db/schema";
 import { facilityFor } from "@/lib/admin/access";
 import { first } from "@/lib/admin/form";
 import { priceText } from "@/lib/menu-text";
@@ -11,7 +11,7 @@ import { HoursEditor } from "@/components/admin/HoursEditor";
 import { ImageField } from "@/components/admin/ImageField";
 import { IconSelect } from "@/components/admin/ListEditor";
 import { SubmitButton } from "@/components/admin/SubmitButton";
-import { deleteFacility, saveFacilityHours, saveService, updateFacility } from "../actions";
+import { deleteFacility, saveFacilityHours, saveService, saveSpot, updateFacility } from "../actions";
 
 export const metadata = { title: "Facility" };
 
@@ -77,9 +77,10 @@ export default async function FacilityPage({
   const { facility: f, property } = await facilityFor(Number((await params).id));
   const sp = await searchParams;
   const db = getDb();
-  const [hours, services] = await Promise.all([
+  const [hours, services, spotRows] = await Promise.all([
     db.select().from(openingHours).where(eq(openingHours.facilityId, f.id)).orderBy(asc(openingHours.sortOrder), asc(openingHours.id)),
     db.select().from(facilityServices).where(eq(facilityServices.facilityId, f.id)).orderBy(asc(facilityServices.sortOrder), asc(facilityServices.id)),
+    db.select().from(spots).where(eq(spots.facilityId, f.id)).orderBy(asc(spots.sortOrder), asc(spots.id)),
   ]);
 
   return (
@@ -182,6 +183,66 @@ export default async function FacilityPage({
             <SubmitButton className="btn-primary btn-sm">Add service</SubmitButton>
           </div>
         </form>
+      </div>
+
+      <h2 id="spots" className="mb-2 mt-8 font-serif text-2xl">
+        Spots and location QR codes
+      </h2>
+      <p className="mb-3 text-sm text-stone-500">
+        Places here where staff can bring things, e.g. <i>Main pool</i> or <i>Rooftop pool</i>. Guests choose one under “Where should we
+        bring it?”. Put each spot&apos;s QR code where guests sit (sun loungers, the pool bar): scanning it opens this page with the spot
+        already chosen.
+      </p>
+      <div className="panel divide-y divide-stone-100">
+        {spotRows.map((s) => (
+          <form key={s.id} action={saveSpot} className="flex flex-wrap items-center gap-2 px-4 py-3">
+            <input type="hidden" name="facilityId" value={f.id} />
+            <input type="hidden" name="id" value={s.id} />
+            <input name="name" defaultValue={s.name} className="input w-48" aria-label="Spot name" />
+            {!s.isActive && <span className="text-xs font-semibold text-amber-800">Off</span>}
+            <div className="ml-auto flex flex-wrap gap-1">
+              <SubmitButton className="btn-primary btn-sm" name="intent" value="save">
+                Save
+              </SubmitButton>
+              {s.isActive && (
+                <a href={`/admin/facilities/${f.id}/spots/print?spot=${s.id}`} target="_blank" className="btn btn-sm">
+                  QR code
+                </a>
+              )}
+              <SubmitButton className="btn btn-sm" name="intent" value="up">
+                ↑
+              </SubmitButton>
+              <SubmitButton className="btn btn-sm" name="intent" value="down">
+                ↓
+              </SubmitButton>
+              <SubmitButton className="btn btn-sm" name="intent" value="toggle">
+                {s.isActive ? "Switch off" : "Switch on"}
+              </SubmitButton>
+              <SubmitButton className="btn btn-sm" name="intent" value="newcode" confirm={`Give ${s.name} a new QR code? The printed one will stop working.`}>
+                New code
+              </SubmitButton>
+              <SubmitButton className="btn-danger btn-sm" name="intent" value="delete" confirm={`Remove ${s.name}?`}>
+                Remove
+              </SubmitButton>
+            </div>
+          </form>
+        ))}
+        {spotRows.length === 0 && <p className="px-4 py-4 text-sm text-stone-500">No spots yet. Guests can still choose “My room” or “Somewhere else”.</p>}
+      </div>
+      <div className="mt-3 flex flex-wrap items-end gap-3">
+        <form action={saveSpot} className="panel flex flex-1 flex-wrap items-end gap-2 border-dashed p-3">
+          <input type="hidden" name="facilityId" value={f.id} />
+          <label className="min-w-48 flex-1">
+            <span className="label">Add a spot</span>
+            <input name="name" placeholder="e.g. Main pool" required maxLength={60} className="input" />
+          </label>
+          <SubmitButton className="btn-primary btn-sm">Add spot</SubmitButton>
+        </form>
+        {spotRows.some((s) => s.isActive) && (
+          <a href={`/admin/facilities/${f.id}/spots/print`} target="_blank" className="btn">
+            Print spot QR codes
+          </a>
+        )}
       </div>
 
       <HoursEditor hours={hours} action={saveFacilityHours} ownerField="facilityId" ownerId={f.id} placeholder="e.g. Pool" />

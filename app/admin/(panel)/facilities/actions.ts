@@ -1,8 +1,9 @@
 "use server";
 
+import { randomBytes } from "node:crypto";
 import { and, asc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db/db";
-import { facilities, facilityServices } from "@/lib/db/schema";
+import { facilities, facilityServices, spots } from "@/lib/db/schema";
 import { audit } from "@/lib/audit";
 import { facilityFor, moveInList, propertyFor } from "@/lib/admin/access";
 import { back, bool, emails, imageUrl, int, opt, slugify, str } from "@/lib/admin/form";
@@ -140,4 +141,52 @@ export async function saveService(form: FormData) {
   else await db.insert(facilityServices).values({ ...values, facilityId, sortOrder: siblings.length });
   await audit(user, "service_saved", name);
   back(path, `Saved ${name}.`);
+}
+
+const newSpotCode = () => randomBytes(6).toString("base64url"); // 8 chars, unguessable
+
+/** Spots (e.g. Main pool) where staff bring requests; each has its own QR code. */
+export async function saveSpot(form: FormData) {
+  const facilityId = int(form, "facilityId")!;
+  const { user } = await facilityFor(facilityId);
+  const path = `/admin/facilities/${facilityId}#spots`;
+  const db = getDb();
+  const id = int(form, "id");
+  const intent = str(form, "intent");
+  const siblings = await db
+    .select()
+    .from(spots)
+    .where(eq(spots.facilityId, facilityId))
+    .orderBy(asc(spots.sortOrder), asc(spots.id));
+  const spot = id !== null ? siblings.find((s) => s.id === id) : undefined;
+
+  if (spot && intent === "delete") {
+    await db.delete(spots).where(eq(spots.id, spot.id));
+    await audit(user, "spot_deleted", spot.name);
+    back(path, `${spot.name} removed. Its printed QR code now opens the general guide.`);
+  }
+  if (spot && intent === "newcode") {
+    await db.update(spots).set({ code: newSpotCode(), updatedAt: new Date() }).where(eq(spots.id, spot.id));
+    await audit(user, "spot_code_changed", spot.name);
+    back(path, `${spot.name} has a new QR code. Print it and replace the old one, which no longer works.`);
+  }
+  if (spot && intent === "toggle") {
+    await db.update(spots).set({ isActive: !spot.isActive, updatedAt: new Date() }).where(eq(spots.id, spot.id));
+    back(path, spot.isActive ? `${spot.name} switched off.` : `${spot.name} switched on.`);
+  }
+  if (spot && (intent === "up" || intent === "down")) {
+    await moveInList(siblings, spot.id, intent, (rowId, n) => db.update(spots).set({ sortOrder: n }).where(eq(spots.id, rowId)));
+    back(path, "Order updated.");
+  }
+
+  const name = str(form, "name").slice(0, 60);
+  if (!name) back(path, "Give the spot a name, e.g. Main pool.", "error");
+  if (spot) {
+    await db.update(spots).set({ name, updatedAt: new Date() }).where(eq(spots.id, spot.id));
+    back(path, `Renamed to ${name}.`);
+  }
+  if (siblings.some((s) => s.name.toLowerCase() === name.toLowerCase())) back(path, `There's already a spot called "${name}".`, "error");
+  await db.insert(spots).values({ facilityId, name, code: newSpotCode(), sortOrder: siblings.length });
+  await audit(user, "spot_created", name);
+  back(path, `${name} added. Print its QR code from “Print spot QR codes”.`);
 }

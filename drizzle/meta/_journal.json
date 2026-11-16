@@ -50,6 +50,13 @@
       "when": 1794807936166,
       "tag": "0006_email_and_resets",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1794839425322,
+      "tag": "0007_spots",
+      "breakpoints": true
     }
   ]
 }

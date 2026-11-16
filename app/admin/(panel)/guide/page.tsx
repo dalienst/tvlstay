@@ -164,6 +164,18 @@ const TASKS: Task[] = [
     ),
   },
   {
+    q: "Spot QR codes (pool loungers, the pool bar)",
+    roles: EDITORS,
+    a: (
+      <>
+        Open the facility (e.g. <b>Pools</b>) and scroll to <b>Spots and location QR codes</b>. Type a name like <i>Main pool</i> and click{" "}
+        <b>Add spot</b>, then click <b>QR code</b> next to it (or <b>Print spot QR codes</b> for all of them) and print. A guest who scans it
+        lands on that facility with the spot already chosen under “Where should we bring it?”, so a towel request says{" "}
+        <b>Bring to: Main pool</b> in Requests and in the email. If a code goes missing, click <b>New code</b>: the old one stops working.
+      </>
+    ),
+  },
+  {
     q: "Change or remove a photo",
     roles: EDITORS,
     a: (

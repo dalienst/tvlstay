@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFacility, getProperty } from "@/lib/compendium";
 import { currentRoom } from "@/lib/room";
+import { currentSpot } from "@/lib/spot";
 import { isExternal, telHref } from "@/lib/format";
 import { money, optionText, shownPrices } from "@/lib/price";
 import { HoursList } from "@/components/HoursList";
@@ -27,7 +28,8 @@ export default async function FacilityPage({ params }: Props) {
   if (!property) notFound();
   const f = await getFacility(property.id, slug);
   if (!f) notFound();
-  const room = await currentRoom(property.id);
+  const [room, scanned] = await Promise.all([currentRoom(property.id), currentSpot(property.id)]);
+  const atSpot = scanned && scanned.facility.id === f.id ? scanned.spot : null;
   const ext = f.extension ?? property.receptionExt;
 
   return (
@@ -64,6 +66,11 @@ export default async function FacilityPage({ params }: Props) {
           <div className="mt-2 px-1">
             <OpenBadge hours={f.hours} />
           </div>
+        )}
+        {atSpot && (
+          <p className="mx-1 mt-3 inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold text-brand">
+            <Icon name="pin" className="h-3.5 w-3.5" /> You&apos;re at {atSpot.name}: we&apos;ll bring requests here
+          </p>
         )}
         {f.summary && <p className="mt-3 px-1 text-stone-700">{f.summary}</p>}
         {f.details?.split(/\n\s*\n/).map((para, i) => (
@@ -177,6 +184,8 @@ export default async function FacilityPage({ params }: Props) {
                                   ? prices.map(optionText)
                                   : undefined
                               }
+                              places={f.spots}
+                              atSpot={atSpot?.id}
                               submitLabel={`Request ${s.name.toLowerCase()}`}
                             />
                           </div>

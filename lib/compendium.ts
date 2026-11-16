@@ -13,6 +13,7 @@ import {
   menuShares,
   menus,
   openingHours,
+  spots,
   outlets,
   properties,
   rooms,
@@ -145,18 +146,25 @@ export async function getFacilities(propertyId: number) {
     .orderBy(asc(facilities.sortOrder), asc(facilities.name));
   if (!rows.length) return [];
   const ids = rows.map((f) => f.id);
-  const [hours, services] = await Promise.all([
+  const [hours, services, spotRows] = await Promise.all([
     db.select().from(openingHours).where(inArray(openingHours.facilityId, ids)).orderBy(asc(openingHours.sortOrder), asc(openingHours.opens)),
     db
       .select()
       .from(facilityServices)
       .where(and(inArray(facilityServices.facilityId, ids), eq(facilityServices.isPublished, true)))
       .orderBy(asc(facilityServices.sortOrder), asc(facilityServices.id)),
+    db
+      .select({ id: spots.id, name: spots.name, facilityId: spots.facilityId })
+      .from(spots)
+      .where(and(inArray(spots.facilityId, ids), eq(spots.isActive, true)))
+      .orderBy(asc(spots.sortOrder), asc(spots.id)),
   ]);
   return rows.map((f) => ({
     ...f,
     hours: hours.filter((h) => h.facilityId === f.id),
     services: services.filter((s) => s.facilityId === f.id),
+    /** Where staff can bring things, e.g. Main pool. */
+    spots: spotRows.filter((s) => s.facilityId === f.id).map(({ id, name }) => ({ id, name })),
   }));
 }
 

@@ -10,7 +10,7 @@ import { after } from "next/server";
 import { notifyNewRequest } from "@/lib/notify";
 import { and, eq, gt, sql } from "drizzle-orm";
 import { getDb } from "@/lib/db/db";
-import { facilities, facilityServices, guestRequests } from "@/lib/db/schema";
+import { facilities, facilityServices, guestRequests, spots } from "@/lib/db/schema";
 import { getProperty } from "@/lib/compendium";
 import { currentRoom } from "@/lib/room";
 import { MAX_REQUESTS_PER_HOUR, REQUESTS_COOKIE, myRequestIds } from "@/lib/guest-requests";
@@ -31,6 +31,8 @@ export async function sendRequest(_prev: RequestState, form: FormData): Promise<
   let facilityId: number | null = null;
   let serviceId: number | null = null;
   let option: string | null = null;
+  let deliverTo: string | null = null;
+  let spotId: number | null = null;
 
   if (kind === "service") {
     const id = Number(form.get("serviceId"));
@@ -67,6 +69,25 @@ export async function sendRequest(_prev: RequestState, form: FormData): Promise<
   const roomLabel = room?.label ?? clip(form.get("room"), 30);
   if (!roomLabel) return { error: "Please add your room or apartment number." };
 
+  // Where to bring it: the room, one of this facility's spots (e.g. Main pool), or elsewhere.
+  if (kind === "service") {
+    const where = String(form.get("deliverTo") ?? "room");
+    if (where.startsWith("spot:")) {
+      const [spot] = await db
+        .select()
+        .from(spots)
+        .where(and(eq(spots.id, Number(where.slice(5)) || -1), eq(spots.facilityId, facilityId!), eq(spots.isActive, true)));
+      if (!spot) return { error: "Please choose where we should bring it." };
+      deliverTo = spot.name;
+      spotId = spot.id;
+    } else if (where === "other") {
+      if (!message) return { error: "Tell us where to bring it in the box below." };
+      deliverTo = "Somewhere else (see message)";
+    } else {
+      deliverTo = `Room ${roomLabel}`;
+    }
+  }
+
   // Basic flood protection: a hashed IP, never stored in plain form.
   const h = await headers();
   const ip = (h.get("x-forwarded-for") ?? "").split(",")[0].trim() || h.get("x-real-ip") || "unknown";
@@ -89,6 +110,8 @@ export async function sendRequest(_prev: RequestState, form: FormData): Promise<
       message,
       roomId: room?.id ?? null,
       roomLabel,
+      deliverTo,
+      spotId,
       guestName: clip(form.get("name"), 80),
       contact: clip(form.get("contact"), 40),
       sourceHash,

@@ -35,6 +35,7 @@ export function recipientsFor(
 function details(r: typeof guestRequests.$inferSelect) {
   return [
     r.option ? `Option: ${r.option}` : null,
+    r.deliverTo ? `Bring to: ${r.deliverTo}` : null,
     `Room: ${r.roomLabel ?? "not given"}`,
     r.guestName ? `Guest: ${r.guestName}` : null,
     r.contact ? `Phone: ${r.contact}` : null,
@@ -52,7 +53,7 @@ export async function notifyNewRequest(requestId: number, origin?: string) {
   const label = r.kind === "issue" ? `Problem: ${r.title}` : r.title;
   await sendStaffEmail({
     to,
-    subject: `${label} · Room ${r.roomLabel ?? "?"} · #${r.id}`,
+    subject: `${label} · ${r.deliverTo && !r.deliverTo.startsWith("Room ") ? `${r.deliverTo} · ` : ""}Room ${r.roomLabel ?? "?"} · #${r.id}`,
     heading: `New ${r.kind === "issue" ? "problem reported" : "request"} at ${property.name}`,
     lines: [label, ...details(r)],
     button: base ? { label: "Open in Requests", url: `${base}/admin/requests#r${r.id}` } : undefined,

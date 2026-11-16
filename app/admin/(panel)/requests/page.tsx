@@ -132,6 +132,11 @@ export default async function Requests({ searchParams }: { searchParams: Promise
               </span>
             </div>
             {r.option && <p className="mt-1 text-sm font-medium text-brand">{r.option}</p>}
+            {r.deliverTo && (
+              <p className="mt-1 text-sm">
+                Bring to: <b>{r.deliverTo}</b>
+              </p>
+            )}
             <p className="mt-1 text-sm">
               <b>{r.roomLabel ? `Room ${r.roomLabel}` : "Room not given"}</b>
               {r.guestName && <> · {r.guestName}</>}

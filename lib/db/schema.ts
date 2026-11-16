@@ -396,6 +396,26 @@ export const facilityServices = pgTable(
   (t) => [index("facility_services_facility_idx").on(t.facilityId)],
 );
 
+/**
+ * Places within a facility where staff can bring things, e.g. "Main pool" or "Rooftop pool".
+ * Each has its own QR code (/s/<code>): scanning it fills in the spot on the guest's request.
+ */
+export const spots = pgTable(
+  "spots",
+  {
+    id: serial("id").primaryKey(),
+    facilityId: integer("facility_id")
+      .notNull()
+      .references(() => facilities.id, { onDelete: "cascade" }),
+    name: text("name").notNull(),
+    code: text("code").notNull(),
+    isActive: boolean("is_active").notNull().default(true),
+    sortOrder: integer("sort_order").notNull().default(0),
+    ...timestamps,
+  },
+  (t) => [uniqueIndex("spots_code_idx").on(t.code), index("spots_facility_idx").on(t.facilityId)],
+);
+
 export const REQUEST_STATUSES = ["new", "in_progress", "done", "cancelled"] as const;
 export type RequestStatus = (typeof REQUEST_STATUSES)[number];
 
@@ -418,6 +438,9 @@ export const guestRequests = pgTable(
     roomId: integer("room_id").references(() => rooms.id, { onDelete: "set null" }),
     /** From the room's QR code, or typed by the guest. */
     roomLabel: text("room_label"),
+    /** Where to bring it: "Room", a spot's name ("Main pool"), or what the guest typed. */
+    deliverTo: text("deliver_to"),
+    spotId: integer("spot_id").references(() => spots.id, { onDelete: "set null" }),
     guestName: text("guest_name"),
     /** Phone or WhatsApp, if the guest wants a call back. */
     contact: text("contact"),

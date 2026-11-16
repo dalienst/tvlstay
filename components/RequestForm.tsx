@@ -13,6 +13,8 @@ export function RequestForm({
   kind = "service",
   room,
   options,
+  places,
+  atSpot,
   submitLabel = "Send request",
 }: {
   property: string;
@@ -21,6 +23,10 @@ export function RequestForm({
   room?: string | null;
   /** Priced options (e.g. "60 min · KES 5,000"); the guest picks one. */
   options?: string[];
+  /** The facility's spots (e.g. Main pool), offered under "Where should we bring it?". */
+  places?: { id: number; name: string }[];
+  /** The spot the guest scanned, chosen by default. */
+  atSpot?: number | null;
   submitLabel?: string;
 }) {
   const [state, action, pending] = useActionState<RequestState, FormData>(sendRequest, null);
@@ -66,6 +72,24 @@ export function RequestForm({
             {options.map((o) => (
               <option key={o}>{o}</option>
             ))}
+          </select>
+        </label>
+      )}
+      {kind === "service" && (
+        <label className="block">
+          <span className="mb-1 block text-sm font-medium">Where should we bring it?</span>
+          <select
+            name="deliverTo"
+            defaultValue={atSpot && places?.some((p) => p.id === atSpot) ? `spot:${atSpot}` : "room"}
+            className="w-full rounded-xl border border-stone-300 bg-white px-3 py-2.5"
+          >
+            <option value="room">{room ? `My room (${room})` : "My room"}</option>
+            {places?.map((p) => (
+              <option key={p.id} value={`spot:${p.id}`}>
+                {p.name}
+              </option>
+            ))}
+            <option value="other">Somewhere else (say where below)</option>
           </select>
         </label>
       )}
