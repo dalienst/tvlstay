@@ -19,17 +19,3 @@ export function Video({ url, title }: { url: string; title: string }) {
     </a>
   );
 }
-
-export function MapEmbed({ query, title }: { query: string; title: string }) {
-  const q = encodeURIComponent(query);
-  return (
-    <div>
-      <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-stone-200">
-        <iframe src={`https://maps.google.com/maps?q=${q}&z=15&output=embed`} title={title} className="h-full w-full" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-      </div>
-      <a href={`https://www.google.com/maps/search/?api=1&query=${q}`} target="_blank" rel="noopener noreferrer" className="mt-2 inline-block text-sm font-medium text-brand">
-        Open in Google Maps
-      </a>
-    </div>
-  );
-}

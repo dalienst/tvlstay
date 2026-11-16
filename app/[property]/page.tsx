@@ -7,7 +7,7 @@ import { formatTime } from "@/lib/time";
 import { isExternal, telHref, whatsappHref } from "@/lib/format";
 import { Icon } from "@/components/Icon";
 import { OpenBadge } from "@/components/OpenBadge";
-import { MapEmbed, Video } from "@/components/Embeds";
+import { Video } from "@/components/Embeds";
 import { SisterOutlets } from "@/components/SisterOutlets";
 
 type Props = { params: Promise<{ property: string }> };
@@ -158,13 +158,6 @@ export default async function PropertyHome({ params }: Props) {
       {property.videoUrl && (
         <section className="px-4 pt-8">
           <Video url={property.videoUrl} title={`${property.name} video`} />
-        </section>
-      )}
-
-      {property.mapQuery && (
-        <section className="px-4 pt-8">
-          <h2 className="mb-3 px-1 font-serif text-2xl">Find us</h2>
-          <MapEmbed query={property.mapQuery} title={`Map of ${property.name}`} />
         </section>
       )}
 

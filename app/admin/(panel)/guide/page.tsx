@@ -127,7 +127,7 @@ const TASKS: Task[] = [
     roles: ADMINS,
     a: (
       <>
-        Property → <b>Details</b>. Everything there (cover photo, welcome text, video, map, phone, extensions, Wi-Fi) is saved with{" "}
+        Property → <b>Details</b>. Everything there (cover photo, welcome text, video, phone, extensions, Wi-Fi) is saved with{" "}
         <b>Save changes</b> at the bottom.
       </>
     ),

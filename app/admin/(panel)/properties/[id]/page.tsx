@@ -175,7 +175,6 @@ export default async function PropertyDetails({ params, searchParams }: Props) {
             <GalleryField name="gallery" label="Photo gallery (shown on the Facilities page)" defaultValue={p.gallery} propertyId={p.id} />
           </div>
           <Text name="videoUrl" label="Video" value={p.videoUrl} placeholder="https://www.youtube.com/watch?v=…" hint="A YouTube or Vimeo link, or a link to an .mp4 file. Leave empty to hide." />
-          <Text name="mapQuery" label="Map" value={p.mapQuery} placeholder="Tamarind Village, Mkomani Road, Mombasa" hint="What to search on the map. Leave empty to hide the map." />
         </Section>
 
         <Section title="Your stay">

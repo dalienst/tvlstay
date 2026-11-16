@@ -62,7 +62,6 @@ export async function updateProperty(form: FormData) {
     whatsapp: opt(form, "whatsapp"),
     email: opt(form, "email"),
     address: opt(form, "address"),
-    mapQuery: opt(form, "mapQuery"),
     videoUrl: opt(form, "videoUrl"),
     receptionExt: opt(form, "receptionExt"),
     roomServiceExt: opt(form, "roomServiceExt"),
