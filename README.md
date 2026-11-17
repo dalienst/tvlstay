@@ -46,6 +46,9 @@ In the Railway project, add a Postgres service and set these variables on the ap
 
 * `DATABASE_URL`: reference the Postgres service, e.g. `${{Postgres.DATABASE_URL}}` (the
   private `*.railway.internal` address; SSL is switched off for it automatically)
+* `WEBSITE_URL`: the Tamarind website's address. "What's on" reads its public events link
+  (`/api/events?brand=…&upcoming=1`, cached 5 minutes). Events and tickets are managed on the
+  website; each property picks its unit under Details → "What's on". Leave it unset to hide events.
 * `SESSION_SECRET`, `APP_URL` (the public address, e.g. https://stay.tamarind.co.ke), and
   `DEFAULT_PROPERTY` if wanted
 

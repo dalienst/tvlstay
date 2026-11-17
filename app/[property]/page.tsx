@@ -9,6 +9,7 @@ import { Icon } from "@/components/Icon";
 import { OpenBadge } from "@/components/OpenBadge";
 import { Video } from "@/components/Embeds";
 import { SisterOutlets } from "@/components/SisterOutlets";
+import { WhatsOn } from "@/components/WhatsOn";
 
 type Props = { params: Promise<{ property: string }> };
 
@@ -97,6 +98,8 @@ export default async function PropertyHome({ params }: Props) {
           </ul>
         </section>
       )}
+
+      <WhatsOn brand={property.eventsBrand} className="px-4 pt-8" />
 
       <SisterOutlets propertyId={property.id} className="px-4 pt-8" />
 

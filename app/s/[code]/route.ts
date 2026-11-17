@@ -1,4 +1,5 @@
-import { NextResponse, type NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
+import { localRedirect } from "@/lib/redirect";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db/db";
 import { properties } from "@/lib/db/schema";
@@ -11,9 +12,9 @@ export async function GET(req: NextRequest, ctx: { params: Promise<{ code: strin
   const { code } = await ctx.params;
   const found = await spotByCode(code);
   const [property] = found ? await getDb().select().from(properties).where(eq(properties.id, found.facility.propertyId)) : [];
-  if (!found || !property?.isPublished) return NextResponse.redirect(new URL("/", req.url));
+  if (!found || !property?.isPublished) return localRedirect("/", req);
   const target = found.facility.isPublished ? `/${property.slug}/facilities/${found.facility.slug}` : `/${property.slug}`;
-  const res = NextResponse.redirect(new URL(target, req.url));
+  const res = localRedirect(target, req);
   res.cookies.set(SPOT_COOKIE, code, {
     httpOnly: true,
     sameSite: "lax",

@@ -57,6 +57,13 @@
       "when": 1794839425322,
       "tag": "0007_spots",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794894876867,
+      "tag": "0008_events_brand",
+      "breakpoints": true
     }
   ]
 }

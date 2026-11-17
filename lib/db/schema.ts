@@ -64,6 +64,8 @@ export const properties = pgTable(
     requestsEnabled: boolean("requests_enabled").notNull().default(false),
     /** List this property's restaurants under "Also from Tamarind" in the other properties' guides (only while it's live). */
     showInOtherGuides: boolean("show_in_other_guides").notNull().default(true),
+    /** Which unit's events to show under "What's on", as the Tamarind website names it (e.g. tamarind_village). */
+    eventsBrand: text("events_brand"),
     /** Staff emails (comma-separated) alerted about guest requests, e.g. reception or the duty manager. */
     requestsEmail: text("requests_email"),
     /** Staff emails alerted about reported problems (Wi-Fi, AC...), e.g. maintenance. Falls back to requestsEmail. */

@@ -1,5 +1,6 @@
 "use server";
 
+import { EVENT_BRANDS } from "@/lib/events";
 import { randomBytes } from "node:crypto";
 import { and, asc, eq, ne } from "drizzle-orm";
 import { getDb } from "@/lib/db/db";
@@ -73,6 +74,7 @@ export async function updateProperty(form: FormData) {
     isPublished: bool(form, "isPublished"),
     requestsEnabled: bool(form, "requestsEnabled"),
     showInOtherGuides: bool(form, "showInOtherGuides"),
+    eventsBrand: EVENT_BRANDS.some((b) => b.id === form.get("eventsBrand")) ? String(form.get("eventsBrand")) : null,
     requestsEmail: emails(form, "requestsEmail", path),
     issuesEmail: emails(form, "issuesEmail", path),
     updatedAt: new Date(),

@@ -1,4 +1,5 @@
-import { NextResponse, type NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
+import { localRedirect } from "@/lib/redirect";
 import { getRoomByCode } from "@/lib/compendium";
 import { ROOM_COOKIE } from "@/lib/room";
 
@@ -7,9 +8,9 @@ import { ROOM_COOKIE } from "@/lib/room";
 export async function GET(req: NextRequest, ctx: { params: Promise<{ code: string }> }) {
   const { code } = await ctx.params;
   const found = await getRoomByCode(code);
-  if (!found || !found.property.isPublished) return NextResponse.redirect(new URL("/", req.url));
+  if (!found || !found.property.isPublished) return localRedirect("/", req);
 
-  const res = NextResponse.redirect(new URL(`/${found.property.slug}`, req.url));
+  const res = localRedirect(`/${found.property.slug}`, req);
   res.cookies.set(ROOM_COOKIE, code, {
     httpOnly: true,
     sameSite: "lax",

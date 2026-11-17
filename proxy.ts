@@ -1,3 +1,4 @@
+import { localRedirect } from "@/lib/redirect";
 import { NextRequest, NextResponse } from "next/server";
 import { COOKIE_NAME, verifySessionToken } from "@/lib/auth/session";
 
@@ -9,7 +10,7 @@ export async function proxy(req: NextRequest) {
   const userId = await verifySessionToken(req.cookies.get(COOKIE_NAME)?.value);
   if (userId) return NextResponse.next();
   if (pathname.startsWith("/admin/api/")) return NextResponse.json({ error: "Sign-in required." }, { status: 401 });
-  return NextResponse.redirect(new URL("/admin/login", req.url));
+  return localRedirect("/admin/login", req);
 }
 
 export const config = {

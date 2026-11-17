@@ -12,6 +12,7 @@ import { SubmitButton } from "@/components/admin/SubmitButton";
 import { GalleryField, ImageField } from "@/components/admin/ImageField";
 import { PropertyTabs } from "@/components/admin/PropertyTabs";
 import { deleteProperty, updateProperty } from "../actions";
+import { EVENT_BRANDS } from "@/lib/events";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -157,6 +158,21 @@ export default async function PropertyDetails({ params, searchParams }: Props) {
             <span>
               List its restaurants in the other Tamarind guides
               <span className="hint">Shown under “Also from Tamarind” on the other properties&apos; home and Dining pages, while this property is shown to guests.</span>
+            </span>
+          </label>
+          <label className="block sm:col-span-2">
+            <span className="label">What&apos;s on: events from the website</span>
+            <select name="eventsBrand" defaultValue={p.eventsBrand ?? ""} className="input">
+              <option value="">Don&apos;t show events</option>
+              {EVENT_BRANDS.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.label}
+                </option>
+              ))}
+            </select>
+            <span className="hint">
+              Events are added on the Tamarind website (Admin → Events). The ones for this unit appear under “What&apos;s on” on the
+              welcome page, and guests tap through to the website for details and tickets.
             </span>
           </label>
           {isSuper && <Text name="sortOrder" type="number" label="Position in lists" value={String(p.sortOrder)} />}
