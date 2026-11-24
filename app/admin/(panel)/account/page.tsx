@@ -3,6 +3,9 @@ import { first } from "@/lib/admin/form";
 import { Flash } from "@/components/admin/Flash";
 import { SubmitButton } from "@/components/admin/SubmitButton";
 import { changePassword } from "../../actions";
+import { PushSetup } from "@/components/admin/PushSetup";
+import { canSeeRequests } from "@/lib/admin/requests";
+import { vapidPublicKey } from "@/lib/push";
 
 export const metadata = { title: "Your account" };
 
@@ -23,6 +26,16 @@ export default async function Account({ searchParams }: { searchParams: Promise<
       <div className="mt-4">
         <Flash msg={first(sp.msg)} err={first(sp.err)} />
       </div>
+      {canSeeRequests(user) && !user.mustChangePassword && (
+        <section id="alerts" className="panel mb-6 scroll-mt-4 p-5">
+          <h2 className="font-serif text-xl">Alerts on this phone</h2>
+          <p className="mb-3 mt-1 text-sm text-stone-500">
+            Get a notification on this phone or computer when a guest sends a request, even when the admin isn&apos;t open. Turn it on
+            separately on each device you use.
+          </p>
+          <PushSetup publicKey={vapidPublicKey()} />
+        </section>
+      )}
       <form action={changePassword} className="panel space-y-4 p-5">
         <label className="block">
           <span className="label">Current password</span>

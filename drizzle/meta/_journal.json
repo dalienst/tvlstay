@@ -64,6 +64,13 @@
       "when": 1794894876867,
       "tag": "0008_events_brand",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1795511365603,
+      "tag": "0009_push_subscriptions",
+      "breakpoints": true
     }
   ]
 }

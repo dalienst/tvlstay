@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db/db";
 import { facilities, guestRequests, properties, users } from "@/lib/db/schema";
 import { appUrl, emailList, sendStaffEmail } from "./email";
+import { pushToRequestHandlers, pushToUsers } from "@/lib/push";
 
 async function load(requestId: number) {
   const db = getDb();
@@ -48,9 +49,17 @@ export async function notifyNewRequest(requestId: number, origin?: string) {
   if (!row) return;
   const { r, property, facility } = row;
   const to = recipientsFor(r, property, facility);
-  if (!to.length) return;
   const base = appUrl(origin);
   const label = r.kind === "issue" ? `Problem: ${r.title}` : r.title;
+  const where = [r.deliverTo && !r.deliverTo.startsWith("Room ") ? r.deliverTo : null, `Room ${r.roomLabel ?? "?"}`].filter(Boolean).join(" · ");
+  // Phone alerts (Your account → Alerts on this phone) go out alongside the email.
+  await pushToRequestHandlers(property.id, {
+    title: r.kind === "issue" ? `Problem reported · ${property.name}` : `New request · ${property.name}`,
+    body: `${label}\n${where}${r.message ? `\n“${r.message.slice(0, 120)}”` : ""}`,
+    url: `/admin/requests#r${r.id}`,
+    tag: `request-${r.id}`,
+  }).catch((err) => console.error("[push] new request:", err));
+  if (!to.length) return;
   await sendStaffEmail({
     to,
     subject: `${label} · ${r.deliverTo && !r.deliverTo.startsWith("Room ") ? `${r.deliverTo} · ` : ""}Room ${r.roomLabel ?? "?"} · #${r.id}`,
@@ -69,6 +78,12 @@ export async function notifyAssigned(requestId: number, userId: string, byName: 
   const { r, property } = row;
   const base = appUrl(origin);
   const label = r.kind === "issue" ? `Problem: ${r.title}` : r.title;
+  await pushToUsers([u.id], {
+    title: `Assigned to you by ${byName}`,
+    body: `${label}\nRoom ${r.roomLabel ?? "?"}${r.deliverTo && !r.deliverTo.startsWith("Room ") ? ` · ${r.deliverTo}` : ""}`,
+    url: `/admin/requests#r${r.id}`,
+    tag: `assigned-${r.id}`,
+  }).catch((err) => console.error("[push] assigned:", err));
   await sendStaffEmail({
     to: [u.email],
     subject: `Assigned to you: ${label} · Room ${r.roomLabel ?? "?"}`,

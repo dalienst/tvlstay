@@ -101,6 +101,19 @@ const TASKS: Task[] = [
     ),
   },
   {
+    q: "Get alerts when a guest sends a request",
+    roles: HANDLERS,
+    a: (
+      <>
+        <b>On a tablet or PC:</b> leave <b>Requests</b> open. New requests pop up with a chime and appear in the list by themselves (tap
+        the page once so the browser allows sound; the <b>🔔 Sound on</b> button in the header mutes it). <b>On your phone:</b> go to{" "}
+        <Link href="/admin/account#alerts" className="text-brand underline">Your account → Alerts on this phone</Link>, choose every
+        request or only ones assigned to you, and tap <b>Turn on alerts</b>. On iPhone, first add the admin to your Home Screen (Share →
+        Add to Home Screen), open it from there, then turn alerts on. Do this on each phone you use.
+      </>
+    ),
+  },
+  {
     q: "Decide who gets which requests",
     roles: ADMINS,
     a: (

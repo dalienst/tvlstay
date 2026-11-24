@@ -75,6 +75,21 @@ Who gets which request:
 The **Requests team** role is for supervisors who handle one property's requests without
 editing the guide.
 
+## Alerts for staff
+
+Besides email, staff learn about new guest requests in two ways:
+
+* **Live in the admin.** Every admin page checks for new requests every 15 seconds. A new one
+  plays a chime, pops up in the corner and puts the count in the browser tab, and the
+  Requests page refreshes itself. Good for a reception tablet or PC left on Requests. The
+  🔔 button in the header mutes it. Browsers only play sound after the page has been tapped once.
+* **Phone alerts (push).** In **Your account → Alerts on this phone**, staff turn on alerts for
+  every new request they can handle, or only ones assigned to them, per device. On Android and
+  computers it works in Chrome or Edge. On iPhone, add the admin to the Home Screen first
+  (Share → Add to Home Screen, iOS 16.4+), open it from there, then turn alerts on.
+  Needs `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY` and `VAPID_SUBJECT`: generate the keys once
+  with `npx web-push generate-vapid-keys`. They're free; no outside account is needed.
+
 ## QR codes
 
 * **General code:** points at `/` (or `/village`). Good for the lobby, restaurant tables, brochures.

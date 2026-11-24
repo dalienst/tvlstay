@@ -473,3 +473,26 @@ export const passwordResets = pgTable(
   },
   (t) => [uniqueIndex("password_resets_token_idx").on(t.tokenHash), index("password_resets_user_idx").on(t.userId)],
 );
+
+/**
+ * Phones and computers that get push alerts for guest requests (one row per device and browser).
+ * scope "all": every new request the person can handle; "mine": only requests assigned to them.
+ */
+export const pushSubscriptions = pgTable(
+  "push_subscriptions",
+  {
+    id: serial("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    endpoint: text("endpoint").notNull(),
+    p256dh: text("p256dh").notNull(),
+    auth: text("auth").notNull(),
+    scope: text("scope").notNull().default("all"),
+    /** e.g. "Android · Chrome", so staff can tell their devices apart. */
+    device: text("device"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    lastSentAt: timestamp("last_sent_at", { withTimezone: true }),
+  },
+  (t) => [uniqueIndex("push_subscriptions_endpoint_idx").on(t.endpoint), index("push_subscriptions_user_idx").on(t.userId)],
+);

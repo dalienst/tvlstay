@@ -1,11 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { requireUser } from "@/lib/auth/current";
 import { ROLE_LABELS } from "@/lib/auth/roles";
 import { canSeeRequests, newRequestCount } from "@/lib/admin/requests";
+import { RequestAlerts } from "@/components/admin/RequestAlerts";
 import { logout } from "../actions";
 
-export const metadata = { title: { default: "Admin", template: "%s · Admin" } };
+export const metadata: Metadata = {
+  title: { default: "Admin", template: "%s · Admin" },
+  // Lets staff add the admin to their phone's home screen (needed for alerts on iPhone).
+  manifest: "/admin.webmanifest",
+  appleWebApp: { capable: true, title: "TV Requests", statusBarStyle: "default" },
+  icons: { apple: "/admin-icon-192.png" },
+};
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
   const user = await requireUser({ allowTemporaryPassword: true });
@@ -43,6 +51,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-3 text-sm text-stone-500">
+            {canSeeRequests(user) && <RequestAlerts />}
             <Link href="/admin/account" className="hover:text-stone-900" title="Change password">
               {user.name}
               <span className="hidden sm:inline"> · {ROLE_LABELS[user.role]}</span>

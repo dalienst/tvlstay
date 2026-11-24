@@ -99,7 +99,7 @@ export default async function Requests({ searchParams }: { searchParams: Promise
       <AutoRefresh seconds={30} />
       <h1 className="font-serif text-3xl">Guest requests</h1>
       <p className="mb-4 mt-1 text-sm text-stone-500">
-        Requests and problems guests send from the guide. This page refreshes itself every 30 seconds. Assign a request to someone (they get
+        Requests and problems guests send from the guide. New requests pop up with a chime and appear here by themselves. Assign a request to someone (they get
         an email), set it to “In progress” when someone is on it, and “Done” when it&apos;s sorted. Guests see the status on their phone.
       </p>
       <Flash msg={first(sp.msg)} err={first(sp.err)} />
